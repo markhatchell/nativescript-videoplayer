@@ -122,9 +122,6 @@ var Video = (function (_super) {
                     if (this.owner.autoplay === true || this.owner.playState === STATE_PLAYING) {
                         this.owner.play();
                     }
-                    if (this.owner.observeCurrentTime && !this.owner._playbackTimeObserverActive) {
-                        this.owner._addPlaybackTimeObserver();
-                    }
                     this.owner._emit(videoCommon.Video.playbackReadyEvent);
                     if (this.owner.loop === true) {
                         mp.setLooping(true);
@@ -165,6 +162,7 @@ var Video = (function (_super) {
             },
             onCompletion: function () {
                 if (this.owner) {
+                    this.owner._removePlaybackTimeObserver();
                     this.owner._emit(videoCommon.Video.finishedEvent);
                 }
             }
@@ -295,12 +293,16 @@ var Video = (function (_super) {
             this._openVideo();
         }
         else {
+            if (this.observeCurrentTime && !this._playbackTimeObserverActive) {
+                this._addPlaybackTimeObserver();
+            }
             this.mediaPlayer.start();
         }
     };
     Video.prototype.pause = function () {
         this.playState = STATE_PAUSED;
         this.mediaPlayer.pause();
+        this._removePlaybackTimeObserver();
     };
     Video.prototype.mute = function (mute) {
         if (this.mediaPlayer) {
@@ -314,6 +316,7 @@ var Video = (function (_super) {
     };
     Video.prototype.stop = function () {
         this.mediaPlayer.stop();
+        this._removePlaybackTimeObserver();
         this.playState = STATE_IDLE;
         this.release();
     };
@@ -386,8 +389,13 @@ var Video = (function (_super) {
         }, 500);
     };
     Video.prototype._removePlaybackTimeObserver = function () {
-        timer.clearInterval(this._playbackTimeObserver);
-        this._playbackTimeObserverActive = false;
+        if (this._playbackTimeObserverActive) {
+            var _milliseconds = this.mediaPlayer.getCurrentPosition();
+            this._setValue(Video.currentTimeProperty, _milliseconds);
+            this._emit(videoCommon.Video.currentTimeUpdatedEvent);
+            timer.clearInterval(this._playbackTimeObserver);
+            this._playbackTimeObserverActive = false;
+        }
     };
     return Video;
 }(videoCommon.Video));
