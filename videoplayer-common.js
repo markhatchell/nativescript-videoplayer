@@ -167,4 +167,3 @@ var Video = (function (_super) {
     return Video;
 }(view.View));
 exports.Video = Video;
-//# sourceMappingURL=videoplayer-common.js.map

@@ -213,4 +213,3 @@ var PlayerObserverClass = (function (_super) {
     };
     return PlayerObserverClass;
 }(NSObject));
-//# sourceMappingURL=videoplayer.ios.js.map

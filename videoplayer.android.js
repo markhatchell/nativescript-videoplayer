@@ -390,9 +390,11 @@ var Video = (function (_super) {
     };
     Video.prototype._removePlaybackTimeObserver = function () {
         if (this._playbackTimeObserverActive) {
-            var _milliseconds = this.mediaPlayer.getCurrentPosition();
-            this._setValue(Video.currentTimeProperty, _milliseconds);
-            this._emit(videoCommon.Video.currentTimeUpdatedEvent);
+            if (this.mediaPlayer !== null) {
+                var _milliseconds = this.mediaPlayer.getCurrentPosition();
+                this._setValue(Video.currentTimeProperty, _milliseconds);
+                this._emit(videoCommon.Video.currentTimeUpdatedEvent);
+            }
             timer.clearInterval(this._playbackTimeObserver);
             this._playbackTimeObserverActive = false;
         }
@@ -400,4 +402,3 @@ var Video = (function (_super) {
     return Video;
 }(videoCommon.Video));
 exports.Video = Video;
-//# sourceMappingURL=videoplayer.android.js.map
