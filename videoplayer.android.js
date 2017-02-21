@@ -123,7 +123,7 @@ var Video = (function (_super) {
                         this.owner.play();
                     }
                     if (this.owner.observeCurrentTime && !this.owner._playbackTimeObserverActive) {
-                        this._addPlaybackTimeObserver();
+                        this.owner._addPlaybackTimeObserver();
                     }
                     this.owner._emit(videoCommon.Video.playbackReadyEvent);
                     if (this.owner.loop === true) {
