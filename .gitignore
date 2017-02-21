@@ -28,3 +28,10 @@ node_modules/
 *.tgz
 *.gz
 *.zip
+
+!videoplayer.android.js.map
+!videoplayer.ios.js.map
+!ideoplayer-common.js.map
+!videoplayer.android.js
+!videoplayer.ios.js
+!videoplayer-common.js
