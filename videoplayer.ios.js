@@ -73,9 +73,6 @@ var Video = (function (_super) {
             this._didPlayToEndTimeObserver = application.ios.addNotificationObserver(AVPlayerItemDidPlayToEndTimeNotification, this.AVPlayerItemDidPlayToEndTimeNotification.bind(this));
             this._didPlayToEndTimeActive = true;
         }
-        if (this.observeCurrentTime && !this._playbackTimeObserverActive) {
-            this._addPlaybackTimeObserver();
-        }
     };
     Video.prototype.AVPlayerItemDidPlayToEndTimeNotification = function (notification) {
         if (this._player.currentItem && this._player.currentItem === notification.object) {
@@ -87,10 +84,16 @@ var Video = (function (_super) {
         }
     };
     Video.prototype.play = function () {
+        if (this.observeCurrentTime && !this._playbackTimeObserverActive) {
+            this._addPlaybackTimeObserver();
+        }
         this._player.play();
     };
     Video.prototype.pause = function () {
         this._player.pause();
+        if (this._playbackTimeObserverActive) {
+            this._removePlaybackTimeObserver();
+        }
     };
     Video.prototype.mute = function (mute) {
         this._player.muted = mute;
