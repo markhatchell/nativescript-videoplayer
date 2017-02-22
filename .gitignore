@@ -35,3 +35,4 @@ node_modules/
 !videoplayer.android.js
 !videoplayer.ios.js
 !videoplayer-common.js
+!video-source/*.js
